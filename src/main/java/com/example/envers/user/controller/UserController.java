@@ -2,7 +2,6 @@ package com.example.envers.user.controller;
 
 import com.example.envers.user.controller.form.AddUserForm;
 import com.example.envers.user.controller.response.UserResponse;
-import com.example.envers.user.entity.User;
 import com.example.envers.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -39,6 +37,6 @@ public class UserController {
                 .toList();
 
         model.addAttribute("users", users);
-        return "users";
+        return "/user/users";
     }
 }

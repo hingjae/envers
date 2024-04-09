@@ -24,3 +24,8 @@ CREATE TABLE user_role (
     FOREIGN KEY (username) REFERENCES users(username),
     FOREIGN KEY (role_id) REFERENCES role(id)
 );
+
+CREATE TABLE user_revision (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    timestamp BIGINT
+);

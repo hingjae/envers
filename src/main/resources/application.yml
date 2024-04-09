@@ -13,14 +13,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    org:
-      hibernate:
-        envers:
-          audit_table_suffix: _history
-          revision_field_name: rev_id
-          store_data_at_delete: true
-
-
+    open-in-view: false
 
 logging:
   level:
@@ -28,4 +21,9 @@ logging:
       hibernate:
         SQL: DEBUG
         orm.jdbc.bind: TRACE
-    com.example.envers.controller: DEBUG
+    com.example.envers.user.controller: DEBUG
+
+org:
+  hibernate:
+    envers:
+      store_data_at_delete: true
