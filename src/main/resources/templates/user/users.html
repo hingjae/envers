@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<div th:replace="~{fragment/top-bar :: topbar}"></div>
 <div>
     <table>
         <thead>
@@ -24,7 +25,7 @@
             <td th:text="${user.name}"></td>
             <td th:text="${user.phoneNumber}"></td>
             <td th:text="${user.email}"></td>
-            <td><a th:href="@{/users/{userId}/edit(userId=${userId})}">수</a></td>
+            <td><a th:href="@{/users/{username}/modify(username=${user.username})}">수정</a></td>
         </tr>
         </tbody>
     </table>

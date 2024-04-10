@@ -1,6 +1,7 @@
-package com.example.envers.user.envers;
+package com.example.envers.envers;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
@@ -10,18 +11,21 @@ import org.hibernate.envers.RevisionTimestamp;
  * @RevisionEntity, @RevisionNumber,@RevisionTimestamp 애노테이션으로 커스터마이징
  */
 @Entity
-@RevisionEntity(UserRevisionEntityListener.class)
+@RevisionEntity(UserRevisionListener.class)
 @Table(name = "user_revision")
 public class UserRevision {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @RevisionNumber
-    @Column(name = "id")
+    @Column(name = "rev")
     private Long id;
 
     @RevisionTimestamp
     @Column(name = "timestamp")
     private Long timestamp;
 
+    @Setter
+    @Column(name = "modified_by")
+    private String modifiedBy;
 }

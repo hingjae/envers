@@ -5,9 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class AddUserForm {
-    private final String username;
-
+public class ModifyUserForm {
     private final String password;
 
     private final String name;

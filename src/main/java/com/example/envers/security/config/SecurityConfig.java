@@ -1,5 +1,6 @@
 package com.example.envers.security.config;
 
+import com.example.envers.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,25 +23,29 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private final UserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    @Bean
+    public WebSecurityCustomizer configure() {
+        return (web) -> web.ignoring()
+                .requestMatchers(toH2Console())
+                .requestMatchers(String.valueOf(toStaticResources()));
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users/**").permitAll()
-                .requestMatchers(String.valueOf(toH2Console()), String.valueOf(toStaticResources())).permitAll()
-        );
+                .requestMatchers("/", "/users/**", "/login").permitAll()
+                .anyRequest().authenticated());
 
         http.formLogin(configurer -> configurer
                 .loginPage("/login")
                 .usernameParameter("username")
-                .passwordParameter("password")
-        );
+                .passwordParameter("password"));
 
         http.logout(configurer -> configurer
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .invalidateHttpSession(true)
-        );
+                .invalidateHttpSession(true));
 
         return http.build();
     }

@@ -1,10 +1,7 @@
 package com.example.envers.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -20,27 +17,37 @@ public class User {
     @Id
     private String username;
 
-    @Column
-    @Audited(withModifiedFlag = true)
-    private String name;
-
+    @Setter
     @Column
     @Audited(withModifiedFlag = true)
     private String password; // 비밀번호 변경, 초기화 구분해야함.
 
+    @Setter
+    @Column
+    @Audited(withModifiedFlag = true)
+    private String name;
+
+    @Setter
     @Column
     @Audited(withModifiedFlag = true)
     private String phoneNumber;
 
+    @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private String email;
 
+    @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private Boolean confirmYn = false;
 
+    @Setter
     @Column
-    private boolean renewPassword = false;
+    @Audited(withModifiedFlag = true)
+    private Boolean renewPassword = false;
 
+    @Setter
     @NotAudited
     @OneToMany(mappedBy = "user")
     private List<UserRole> userRoles = new ArrayList<>();
