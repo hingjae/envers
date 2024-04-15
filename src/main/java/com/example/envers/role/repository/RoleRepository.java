@@ -1,7 +1,7 @@
-package com.example.envers.user.repository;
+package com.example.envers.role.repository;
 
-import com.example.envers.user.entity.Role;
-import com.example.envers.user.entity.RoleType;
+import com.example.envers.role.entity.Role;
+import com.example.envers.role.entity.RoleType;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

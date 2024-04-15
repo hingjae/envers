@@ -1,12 +1,16 @@
 package com.example.envers.user.service;
 
+import com.example.envers.group.entity.Group;
+import com.example.envers.group.entity.GroupUser;
+import com.example.envers.group.repository.GroupRepository;
+import com.example.envers.group.repository.GroupUserRepository;
 import com.example.envers.user.controller.form.AddUserForm;
 import com.example.envers.user.controller.form.ModifyUserForm;
-import com.example.envers.user.entity.Role;
-import com.example.envers.user.entity.RoleType;
+import com.example.envers.role.entity.Role;
+import com.example.envers.role.entity.RoleType;
 import com.example.envers.user.entity.User;
 import com.example.envers.user.entity.UserRole;
-import com.example.envers.user.repository.RoleRepository;
+import com.example.envers.role.repository.RoleRepository;
 import com.example.envers.user.repository.UserRepository;
 import com.example.envers.user.repository.UserRoleRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,12 +29,25 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GroupRepository groupRepository;
+    private final GroupUserRepository groupUserRepository;
 
     @Transactional
-    public void save(AddUserForm addUserForm) {
-        Role role = roleRepository.findByRoleType(RoleType.USER);
+    public User save(AddUserForm addUserForm) {
+        Role role = roleRepository.findByRoleType(RoleType.GROUP_USER);
         User user = userRepository.save(createUser(addUserForm));
-        UserRole userRole = userRoleRepository.save(createUserRole(user, role));
+        userRoleRepository.save(createUserRole(user, role));
+        Group group = groupRepository.findByName(addUserForm.getGroupName())
+                .orElseThrow(EntityNotFoundException::new);
+        groupUserRepository.save(createGroupUser(group, user));
+        return user;
+    }
+
+    private GroupUser createGroupUser(Group group, User user) {
+        return GroupUser.builder()
+                .group(group)
+                .user(user)
+                .build();
     }
 
     private User createUser(AddUserForm form) {
@@ -42,6 +59,8 @@ public class UserService {
                 .email(form.getEmail())
                 .confirmYn(false)
                 .renewPassword(false)
+                .createdBy(form.getUsername())
+                .modifiedBy(form.getUsername())
                 .build();
     }
 
@@ -52,12 +71,12 @@ public class UserService {
                 .build();
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAllWithGroups() {
+        return userRepository.findAllWithGroups();
     }
 
     public User findById(String username) {
-        return userRepository.findById(username)
+        return userRepository.findByUsernameWithGroups(username)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -65,7 +84,6 @@ public class UserService {
     public void modify(String username, ModifyUserForm form) {
         User user = findById(username);
 
-        user.setPassword(passwordEncoder.encode(form.getPassword()));
         user.setName(form.getName());
         user.setPhoneNumber(form.getPhoneNumber());
         user.setEmail(form.getEmail());

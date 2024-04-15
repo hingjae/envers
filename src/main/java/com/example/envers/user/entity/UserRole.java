@@ -1,5 +1,6 @@
 package com.example.envers.user.entity;
 
+import com.example.envers.role.entity.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
