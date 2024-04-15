@@ -11,15 +11,15 @@ import org.hibernate.envers.RevisionTimestamp;
  * @RevisionEntity, @RevisionNumber,@RevisionTimestamp 애노테이션으로 커스터마이징
  */
 @Entity
-@RevisionEntity(UserRevisionListener.class)
-@Table(name = "user_revision")
-public class UserRevision {
+@RevisionEntity(CustomRevisionListener.class)
+@Table(name = "revision")
+public class Revision {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @RevisionNumber
     @Column(name = "rev")
-    private Long id;
+    private Long rev;
 
     @RevisionTimestamp
     @Column(name = "timestamp")

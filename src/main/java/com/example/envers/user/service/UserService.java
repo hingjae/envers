@@ -4,13 +4,13 @@ import com.example.envers.group.entity.Group;
 import com.example.envers.group.entity.GroupUser;
 import com.example.envers.group.repository.GroupRepository;
 import com.example.envers.group.repository.GroupUserRepository;
-import com.example.envers.user.controller.form.AddUserForm;
-import com.example.envers.user.controller.form.ModifyUserForm;
 import com.example.envers.role.entity.Role;
 import com.example.envers.role.entity.RoleType;
+import com.example.envers.role.repository.RoleRepository;
+import com.example.envers.user.controller.form.AddUserForm;
+import com.example.envers.user.controller.form.ModifyUserForm;
 import com.example.envers.user.entity.User;
 import com.example.envers.user.entity.UserRole;
-import com.example.envers.role.repository.RoleRepository;
 import com.example.envers.user.repository.UserRepository;
 import com.example.envers.user.repository.UserRoleRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -87,5 +87,12 @@ public class UserService {
         user.setName(form.getName());
         user.setPhoneNumber(form.getPhoneNumber());
         user.setEmail(form.getEmail());
+        Group group = groupRepository.findByName(form.getGroupName())
+                .orElseThrow(EntityNotFoundException::new);
+
+        GroupUser groupUser = groupUserRepository.findByUsername(user.getUsername())
+                .orElseThrow(EntityNotFoundException::new);
+
+        groupUser.setGroup(group);
     }
 }

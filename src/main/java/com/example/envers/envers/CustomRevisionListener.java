@@ -7,13 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Objects;
 
-public class UserRevisionListener implements RevisionListener {
+public class CustomRevisionListener implements RevisionListener {
     @Override
     public void newRevision(Object o) {
-        UserRevision userRevision = (UserRevision) o;
+        Revision revision = (Revision) o;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.nonNull(authentication) && authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
-            userRevision.setModifiedBy(customUserDetails.getUsername());
+            revision.setModifiedBy(customUserDetails.getUsername());
         }
     }
 }

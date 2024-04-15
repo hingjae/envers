@@ -4,7 +4,6 @@ import com.example.envers.group.entity.Group;
 import com.example.envers.group.entity.GroupUser;
 import com.example.envers.group.repository.GroupRepository;
 import com.example.envers.group.repository.GroupUserRepository;
-import com.example.envers.user.controller.form.AddUserForm;
 import com.example.envers.role.entity.Role;
 import com.example.envers.role.entity.RoleType;
 import com.example.envers.role.repository.RoleRepository;
@@ -12,7 +11,6 @@ import com.example.envers.user.entity.User;
 import com.example.envers.user.entity.UserRole;
 import com.example.envers.user.repository.UserRepository;
 import com.example.envers.user.repository.UserRoleRepository;
-import com.example.envers.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -46,6 +44,7 @@ public class DataInit {
         Role groupUserRole = roleRepository.findByRoleType(RoleType.GROUP_USER);
         Role systemAdminRole = roleRepository.findByRoleType(RoleType.SYSTEM_ADMIN);
         Group group1 = groupRepository.save(Group.builder().name("group1").build());
+        Group group2 = groupRepository.save(Group.builder().name("group2").build());
 
         LocalDateTime now = LocalDateTime.now();
 

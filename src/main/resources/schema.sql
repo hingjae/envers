@@ -1,6 +1,6 @@
 drop table if exists users;
 drop table if exists roles;
-drop table if exists user_roles;
+drop table if exists user_role;
 
 CREATE TABLE users (
     username VARCHAR(255) PRIMARY KEY,
@@ -42,30 +42,44 @@ CREATE TABLE group_user (
   FOREIGN KEY (username) REFERENCES users (username)
 );
 
--- CREATE TABLE user_revision (
---     rev BIGINT AUTO_INCREMENT PRIMARY KEY,
---     timestamp BIGINT,
---     modified_by VARCHAR(255)
--- );
---
--- CREATE TABLE users_aud (
---     username VARCHAR(255) NOT NULL,
---     rev bigint NOT NULL,
---     revtype TINYINT,
---
---     name VARCHAR(255),
---     name_mod BOOLEAN DEFAULT FALSE,
---     password VARCHAR(255),
---     password_mod BOOLEAN DEFAULT FALSE,
---     phone_number VARCHAR(255),
---     phone_number_mod BOOLEAN DEFAULT FALSE,
---     email VARCHAR(255),
---     email_mod BOOLEAN DEFAULT FALSE,
---     confirm_yn BOOLEAN,
---     confirm_yn_mod BOOLEAN DEFAULT FALSE,
---     renew_password BOOLEAN,
---     renew_password_mod BOOLEAN DEFAULT FALSE,
---
---     CONSTRAINT user_aud_pk PRIMARY KEY (username, rev),
---     FOREIGN KEY (rev) REFERENCES user_revision (rev)
--- );
+CREATE TABLE revision (
+    rev BIGINT AUTO_INCREMENT PRIMARY KEY,
+    timestamp BIGINT,
+    modified_by VARCHAR(255)
+);
+
+CREATE TABLE users_aud (
+    username VARCHAR(255) NOT NULL,
+    rev bigint NOT NULL,
+    revtype TINYINT,
+
+    name VARCHAR(255),
+    name_mod BOOLEAN DEFAULT FALSE,
+    password VARCHAR(255),
+    password_mod BOOLEAN DEFAULT FALSE,
+    phone_number VARCHAR(255),
+    phone_number_mod BOOLEAN DEFAULT FALSE,
+    email VARCHAR(255),
+    email_mod BOOLEAN DEFAULT FALSE,
+    confirm_yn BOOLEAN,
+    confirm_yn_mod BOOLEAN DEFAULT FALSE,
+    renew_password BOOLEAN,
+    renew_password_mod BOOLEAN DEFAULT FALSE,
+    group_sn bigint,
+    group_sn_mod BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT user_aud_pk PRIMARY KEY (username, rev),
+    FOREIGN KEY (rev) REFERENCES revision (rev)
+);
+
+CREATE TABLE group_user_aud (
+    group_user_sn bigint not null,
+    rev bigint NOT NULL,
+    revtype TINYINT,
+
+    group_sn bigint not null,
+    group_mod BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT group_user_aud_pk PRIMARY KEY (group_user_sn, rev),
+    FOREIGN KEY (rev) REFERENCES revision (rev)
+);

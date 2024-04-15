@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -17,6 +19,7 @@ public class GroupUser {
 
     @ManyToOne
     @JoinColumn(name = "group_sn")
+    @Audited(withModifiedFlag = true, targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,5 +31,9 @@ public class GroupUser {
         this.groupUserSn = groupUserSn;
         this.group = group;
         this.user = user;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

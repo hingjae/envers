@@ -6,7 +6,6 @@ import com.example.envers.group.entity.GroupUser;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,26 +23,32 @@ public class User extends AuditingFields {
 
     @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private String password; // 비밀번호 변경, 초기화 구분해야함.
 
     @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private String name;
 
     @Setter
     @Column
+//    @Audited(withModifiedFlag = true)
     private String phoneNumber;
 
     @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private String email;
 
     @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private Boolean confirmYn = false;
 
     @Setter
     @Column
+    @Audited(withModifiedFlag = true)
     private Boolean renewPassword = false;
 
     @Setter
