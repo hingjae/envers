@@ -33,7 +33,7 @@ public class User extends AuditingFields {
 
     @Setter
     @Column
-//    @Audited(withModifiedFlag = true)
+    @Audited(withModifiedFlag = true)
     private String phoneNumber;
 
     @Setter

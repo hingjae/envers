@@ -93,6 +93,6 @@ public class UserService {
         GroupUser groupUser = groupUserRepository.findByUsername(user.getUsername())
                 .orElseThrow(EntityNotFoundException::new);
 
-        groupUser.setGroup(group);
+        groupUser.update(group, user);
     }
 }

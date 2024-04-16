@@ -33,7 +33,8 @@ public class GroupUser {
         this.user = user;
     }
 
-    public void setGroup(Group group) {
+    public void update(Group group, User user) {
         this.group = group;
+        this.user = user;
     }
 }
