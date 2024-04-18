@@ -2,15 +2,14 @@ package com.example.envers.user.entity;
 
 import com.example.envers.common.audit.AuditingFields;
 import com.example.envers.group.entity.Group;
-import com.example.envers.group.entity.GroupUser;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Table(name = "users")
 @Getter
@@ -20,6 +19,12 @@ public class User extends AuditingFields {
 
     @Id
     private String username;
+
+    @Setter
+    @Audited(withModifiedFlag = true, targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     @Setter
     @Column
@@ -55,13 +60,10 @@ public class User extends AuditingFields {
     @OneToMany(mappedBy = "user")
     private List<UserRole> userRoles = new ArrayList<>();
 
-    @Setter
-    @OneToMany(mappedBy = "user")
-    private List<GroupUser> groupUsers = new ArrayList<>();
-
     @Builder
-    public User(String username, String password, String name, String phoneNumber, String email, Boolean confirmYn, Boolean renewPassword, List<UserRole> userRoles, List<GroupUser> groupUsers, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt) {
+    public User(String username, Group group, String password, String name, String phoneNumber, String email, Boolean confirmYn, Boolean renewPassword, List<UserRole> userRoles, String createdBy, LocalDateTime createdAt, String modifiedBy, LocalDateTime modifiedAt) {
         this.username = username;
+        this.group = group;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -69,7 +71,6 @@ public class User extends AuditingFields {
         this.confirmYn = confirmYn;
         this.renewPassword = renewPassword;
         this.userRoles = userRoles;
-        this.groupUsers = groupUsers;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.modifiedAt = modifiedAt;
@@ -77,9 +78,6 @@ public class User extends AuditingFields {
     }
 
     public String getGroupName() {
-        return groupUsers.stream()
-                .map(GroupUser::getGroup)
-                .map(Group::getName)
-                .collect(Collectors.joining(", "));
+        return group.getName();
     }
 }

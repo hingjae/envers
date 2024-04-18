@@ -1,9 +1,7 @@
 package com.example.envers;
 
 import com.example.envers.group.entity.Group;
-import com.example.envers.group.entity.GroupUser;
 import com.example.envers.group.repository.GroupRepository;
-import com.example.envers.group.repository.GroupUserRepository;
 import com.example.envers.role.entity.Role;
 import com.example.envers.role.entity.RoleType;
 import com.example.envers.role.repository.RoleRepository;
@@ -28,8 +26,6 @@ public class DataInit {
 
     private final GroupRepository groupRepository;
 
-    private final GroupUserRepository groupUserRepository;
-
     private final RoleRepository roleRepository;
 
     private final UserRoleRepository userRoleRepository;
@@ -51,6 +47,7 @@ public class DataInit {
         User user1 = userRepository.save(
                 User.builder()
                         .username("user1")
+                        .group(group1)
                         .password(passwordEncoder.encode("pw1"))
                         .name("name1")
                         .email("email1")
@@ -65,6 +62,7 @@ public class DataInit {
         User user2 = userRepository.save(
                 User.builder()
                         .username("user2")
+                        .group(group1)
                         .password(passwordEncoder.encode("pw2"))
                         .name("name2")
                         .email("email2")
@@ -79,6 +77,7 @@ public class DataInit {
         User user3 = userRepository.save(
                 User.builder()
                         .username("user3")
+                        .group(group1)
                         .password(passwordEncoder.encode("pw3"))
                         .name("name3")
                         .email("email3")
@@ -93,6 +92,7 @@ public class DataInit {
         User user4 = userRepository.save(
                 User.builder()
                         .username("user4")
+                        .group(group1)
                         .password(passwordEncoder.encode("pw4"))
                         .name("name4")
                         .email("email4")
@@ -115,34 +115,6 @@ public class DataInit {
                         .createdBy("SYSTEM_ADMIN")
                         .modifiedAt(now)
                         .modifiedBy("SYSTEM_ADMIN")
-                        .build()
-        );
-
-        groupUserRepository.save(
-                GroupUser.builder()
-                        .user(user1)
-                        .group(group1)
-                        .build()
-        );
-
-        groupUserRepository.save(
-                GroupUser.builder()
-                        .user(user2)
-                        .group(group1)
-                        .build()
-        );
-
-        groupUserRepository.save(
-                GroupUser.builder()
-                        .user(user3)
-                        .group(group1)
-                        .build()
-        );
-
-        groupUserRepository.save(
-                GroupUser.builder()
-                        .user(user4)
-                        .group(group1)
                         .build()
         );
 

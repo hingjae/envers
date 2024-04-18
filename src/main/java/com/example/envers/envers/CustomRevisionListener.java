@@ -5,6 +5,7 @@ import org.hibernate.envers.RevisionListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CustomRevisionListener implements RevisionListener {
@@ -15,5 +16,6 @@ public class CustomRevisionListener implements RevisionListener {
         if (Objects.nonNull(authentication) && authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
             revision.setModifiedBy(customUserDetails.getUsername());
         }
+        revision.setModifiedAt(LocalDateTime.now());
     }
 }

@@ -19,14 +19,12 @@ public interface UserRepository extends JpaRepository<User, String>, RevisionRep
 
     @Query("select u " +
             "from User u " +
-            "join fetch u.groupUsers gu " +
-            "join fetch gu.group g")
-    List<User> findAllWithGroups();
+            "join fetch u.group")
+    List<User> findAllWithGroup();
 
     @Query("select u " +
             "from User u " +
-            "join fetch u.groupUsers gu " +
-            "join fetch gu.group " +
+            "join fetch u.group " +
             "where u.username = :username")
-    Optional<User> findByUsernameWithGroups(@Param("username") String username);
+    Optional<User> findByUsernameWithGroup(@Param("username") String username);
 }

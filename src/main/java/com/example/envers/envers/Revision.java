@@ -6,6 +6,8 @@ import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
+import java.time.LocalDateTime;
+
 /**
  * Revision Entity를 직접 등록하고
  * @RevisionEntity, @RevisionNumber,@RevisionTimestamp 애노테이션으로 커스터마이징
@@ -18,14 +20,14 @@ public class Revision {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @RevisionNumber
-    @Column(name = "rev")
     private Long rev;
 
     @RevisionTimestamp
-    @Column(name = "timestamp")
     private Long timestamp;
 
     @Setter
-    @Column(name = "modified_by")
     private String modifiedBy;
+
+    @Setter
+    private LocalDateTime modifiedAt;
 }

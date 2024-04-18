@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long groupSn;
+    private Long id;
 
     @Column
     private String name;
 
     @Builder
-    public Group(Long groupSn, String name) {
-        this.groupSn = groupSn;
+    public Group(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 }

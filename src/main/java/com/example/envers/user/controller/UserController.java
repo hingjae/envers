@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public String users(Model model) {
-        List<UserResponse> users = userService.findAllWithGroups().stream()
+        List<UserResponse> users = userService.findAllWithGroup().stream()
                 .map(UserResponse::from)
                 .toList();
 
