@@ -19,6 +19,8 @@ public class UserResponse {
 
     private final String groupName;
 
+    private final Boolean isGroupUser;
+
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .username(user.getUsername())
@@ -27,7 +29,7 @@ public class UserResponse {
                 .phoneNumber(user.getPhoneNumber())
                 .email(user.getEmail())
                 .groupName(user.getGroupName())
+                .isGroupUser(user.isGroupUser())
                 .build();
     }
-
 }

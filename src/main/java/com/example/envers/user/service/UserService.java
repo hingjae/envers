@@ -24,10 +24,14 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+
     private final UserRoleRepository userRoleRepository;
+
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+
     private final GroupRepository groupRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public User save(AddUserForm addUserForm) {
@@ -64,7 +68,7 @@ public class UserService {
     }
 
     public List<User> findAllWithGroup() {
-        return userRepository.findAllWithGroup();
+        return userRepository.findAllWithGroupAndRoles();
     }
 
     public User findById(String username) {
@@ -82,5 +86,19 @@ public class UserService {
         user.setPhoneNumber(form.getPhoneNumber());
         user.setEmail(form.getEmail());
         user.setGroup(group);
+    }
+
+    @Transactional
+    public void modifyRole(String username, RoleType roleType) {
+        UserRole userRole = userRoleRepository.findByUser_UsernameAndRole_RoleType(username, roleType)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (userRole.isGroupUser()) {
+            Role groupAdmin = roleRepository.findByRoleType(RoleType.GROUP_ADMIN);
+            userRole.setRole(groupAdmin);
+        } else {
+            Role groupAdmin = roleRepository.findByRoleType(RoleType.GROUP_USER);
+            userRole.setRole(groupAdmin);
+        }
     }
 }

@@ -1,11 +1,9 @@
 package com.example.envers.user.entity;
 
 import com.example.envers.role.entity.Role;
+import com.example.envers.role.entity.RoleType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
@@ -21,6 +19,7 @@ public class UserRole {
     @JoinColumn(name = "username")
     private User user;
 
+    @Setter
     @Audited(withModifiedFlag = true, targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
@@ -36,5 +35,9 @@ public class UserRole {
         this.id = id;
         this.user = user;
         this.role = role;
+    }
+
+    public Boolean isGroupUser() {
+        return this.role.getRoleType() == RoleType.GROUP_USER;
     }
 }

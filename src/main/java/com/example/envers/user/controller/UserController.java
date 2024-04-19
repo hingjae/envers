@@ -1,15 +1,15 @@
 package com.example.envers.user.controller;
 
+import com.example.envers.role.entity.RoleType;
 import com.example.envers.user.controller.form.AddUserForm;
 import com.example.envers.user.controller.form.ModifyUserForm;
 import com.example.envers.user.controller.response.UserResponse;
+import com.example.envers.user.controller.response.UserResponseList;
 import com.example.envers.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -30,12 +30,15 @@ public class UserController {
 
     @GetMapping
     public String users(Model model) {
-        List<UserResponse> users = userService.findAllWithGroup().stream()
-                .map(UserResponse::from)
-                .toList();
-
-        model.addAttribute("users", users);
+        UserResponseList users = UserResponseList.from(userService.findAllWithGroup());
+        model.addAttribute("users", users.getItems());
         return "user/users";
+    }
+
+    @PostMapping("/{username}/change-role")
+    public String changeRole(@PathVariable("username") String username, @RequestParam("roleType") RoleType roleType) {
+        userService.modifyRole(username, roleType);
+        return "redirect:/";
     }
 
     @GetMapping("/{username}/modify")

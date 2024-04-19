@@ -2,6 +2,8 @@ package com.example.envers.user.entity;
 
 import com.example.envers.common.audit.AuditingFields;
 import com.example.envers.group.entity.Group;
+import com.example.envers.role.entity.Role;
+import com.example.envers.role.entity.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -79,5 +81,12 @@ public class User extends AuditingFields {
 
     public String getGroupName() {
         return group.getName();
+    }
+
+    public Boolean isGroupUser() {
+        return userRoles.stream()
+                .map(UserRole::getRole)
+                .map(Role::getRoleType)
+                .anyMatch(roleType -> roleType == RoleType.GROUP_USER);
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -18,6 +18,7 @@
             <th>Email</th>
             <th>Group Name</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +29,16 @@
             <td th:text="${user.phoneNumber}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.groupName}"></td>
+            <td th:if="${user.isGroupUser}">
+                <form method="post" th:action="@{/users/{username}/change-role(username=${user.username}, roleType='GROUP_USER')}">
+                    <button type="submit">관리자로 변경</button>
+                </form>
+            </td>
+            <td th:unless="${user.isGroupUser}">
+                <form method="post" th:action="@{/users/{username}/change-role(username=${user.username}, roleType='GROUP_ADMIN')}">
+                    <button type="submit">사용자로 변경</button>
+                </form>
+            </td>
             <td><a th:href="@{/users/{username}/modify(username=${user.username})}">수정</a></td>
         </tr>
         </tbody>
