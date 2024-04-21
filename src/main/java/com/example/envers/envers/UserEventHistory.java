@@ -2,8 +2,9 @@ package com.example.envers.envers;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class UserEventHistory {
     private Long rev;
 
@@ -41,9 +42,5 @@ public class UserEventHistory {
 
     private Boolean renewPasswordMod;
 
-//    private String groupName;
-//
-//    private String pastUsersName;
-//
-//    private String roleCode;
+    private String groupName;
 }

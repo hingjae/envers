@@ -2,6 +2,9 @@ package com.example.envers.envers.repository;
 
 import com.example.envers.envers.SearchUserEventHistoryCondition;
 import com.example.envers.envers.UserEventHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -20,16 +23,25 @@ public class UserEventHistoryRepository {
         this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public List<UserEventHistory> findUserEventHistory(SearchUserEventHistoryCondition condition) {
-        String sql = "select r.rev, r.modified_by, r.modified_at, " +
+    public Page<UserEventHistory> findAllByCondition(Pageable pageable, SearchUserEventHistoryCondition condition) {
+        BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(condition);
+        String totalSql = "select count(1) " +
+                "   from revision r " +
+                "   join users_aud ua on r.rev = ua.rev ";
+
+        int total = template.queryForObject(totalSql, param, Integer.class);
+
+        String contentSql = "select r.rev, r.modified_by, r.modified_at, r.authorities, r.group_name, " +
                 "       ua.username, ua.revtype, ua.password, ua.password_mod, ua.name, ua.name_mod, " +
                 "       ua.phone_number, ua.phone_number_mod, ua.email, ua.email_mod, ua.confirm_yn, ua.confirm_yn_mod, " +
                 "       ua.renew_password, ua.renew_password_mod" +
                 "   from revision r " +
-                "   join users_aud ua on r.rev = ua.rev";
+                "   join users_aud ua on r.rev = ua.rev " +
+                "   limit :limit offset :offset";
 
-        BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(condition);
-        return template.query(sql, param, userEventHistoryRowMapper());
+        List<UserEventHistory> content = template.query(contentSql, param, userEventHistoryRowMapper());
+
+        return new PageImpl<>(content, pageable, total);
     }
 
     private RowMapper<UserEventHistory> userEventHistoryRowMapper() {

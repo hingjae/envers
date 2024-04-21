@@ -31,7 +31,7 @@ public class CustomRevisionListener implements RevisionListener {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (Objects.nonNull(requestAttributes)) {
             HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-            revision.setGroupName((String) request.getAttribute("groupName"));
+            revision.setGroupName(request.getParameter("groupName"));
         }
 
         revision.setModifiedAt(LocalDateTime.now());
