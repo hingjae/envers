@@ -1,4 +1,4 @@
-package com.example.envers.envers;
+package com.example.envers.envers.revision;
 
 import jakarta.persistence.*;
 import lombok.Setter;
@@ -30,4 +30,10 @@ public class Revision {
 
     @Setter
     private LocalDateTime modifiedAt;
+
+    @Setter
+    private String authorities;
+
+    @Setter
+    private String groupName;
 }

@@ -26,6 +26,7 @@ public abstract class AuditingFields {
     @Column(nullable = false, length = 100, updatable = false)
     protected String createdBy;
 
+    //TODO : @LastModifiedDate 로 인해 데이터를 저장할 때 save이후 추가 update쿼리가 나간다. 이유 모름.
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedDate
     @Column(nullable = false)

@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<User, String>, RevisionRep
     @Query("select u " +
             "from User u " +
             "join fetch u.group " +
+            "join fetch u.userRoles ur " +
+            "join fetch ur.role r " +
             "where u.username = :username")
     Optional<User> findByUsernameWithGroup(@Param("username") String username);
 }

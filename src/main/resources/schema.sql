@@ -18,7 +18,7 @@ CREATE TABLE users (
     renew_password BOOLEAN,
     created_at DATETIME NOT NULL,
     created_by VARCHAR(100) NOT NULL,
-    modified_at DATETIME NOT NULL,
+    modified_at DATETIME,
     modified_by VARCHAR(100) NOT NULL,
 
     foreign key (group_id) references groups(id)
@@ -41,7 +41,9 @@ CREATE TABLE revision (
     rev BIGINT AUTO_INCREMENT PRIMARY KEY,
     timestamp BIGINT,
     modified_by VARCHAR(255),
-    modified_at datetime
+    modified_at datetime,
+    authorities VARCHAR(255),
+    group_name VARCHAR(255)
 );
 
 CREATE TABLE users_aud (
